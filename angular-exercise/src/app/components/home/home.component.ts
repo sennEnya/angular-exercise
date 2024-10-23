@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HousingLocationComponent} from "../housing-location/housing-location.component";
 import {HousingLocation} from "../../interfaces/housinglocation";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,27 @@ import {HousingLocation} from "../../interfaces/housinglocation";
   imports: [
     HousingLocationComponent,
     CommonModule,
+    FormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  searchTerm = '';
+  filteredHousingLocationList: HousingLocation[] = [];
+
+  ngOnInit() {
+    this.filteredHousingLocationList = this.housingLocationList;
+  }
+
+  ApplyFilter() {
+    console.log(this.searchTerm);
+    this.filteredHousingLocationList = this.housingLocationList.filter((location) => {
+      return location.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+  }
+
+
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
   housingLocationList: HousingLocation[] = [
     {
